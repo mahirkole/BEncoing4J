@@ -1,13 +1,13 @@
 package com.mahirkole.jittorrent.bencoder4j;
 
 public class BEncodingString implements BEncodingElement<String> {
-	private String encodedString;
+	private String decodedString;
 
-	public BEncodingString(String encodedString) {
-		this.encodedString = encodedString;
+	public BEncodingString(String decodedString) {
+		this.decodedString = decodedString;
 	}
 
 	public String read() {
-		return null;
+		return decodedString;
 	}
 }
