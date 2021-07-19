@@ -2,9 +2,14 @@ package com.mahirkole.jittorrent.bencoder4j;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingDictionaryDecoder;
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingElementDecoder;
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingIntegerDecoder;
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingListDecoder;
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingStringDecoder;
+import com.mahirkole.jittorrent.bencoder4j.element.BEncodingElement;
+import com.mahirkole.jittorrent.bencoder4j.util.DecoderUtils;
 
 public class Decoder {
 	private static Decoder decoder;
@@ -25,58 +30,43 @@ public class Decoder {
 		return null;
 	}
 
-	public List<BEncodingElement<?>> decode(String content) throws Exception {
+	public BEncodingElement<?> decode(String content) throws Exception {
+		System.out.println("Decoder.decode.content: " + content);
 		StringReader reader = new StringReader(content);
+		return decode(reader);
+	}
+	
+	public BEncodingElement<?> decode(StringReader reader) throws IOException {
 		int beginning = reader.read();
 
-		List<BEncodingElement<?>> elementList = new ArrayList<BEncodingElement<?>>();
+		System.out.println("Decoder.decode.beginning: " + ((char) beginning));
 		
-		while(beginning != -1) {
-			if('i' == (char) beginning) {
-				
-				StringBuilder numberBuilder = new StringBuilder();
-				
-				char next = (char) reader.read();
-				
-				while('e' != next) {
-					numberBuilder.append(next);
-					next = (char) reader.read();
-				}
-				
-				elementList.add(null);
-			} else if('l' == (char) beginning) {
-				
-			} else if('d' == (char) beginning) {
-				
-			} else if(DecoderUtils.isNumeric((char) beginning)) {
-				
-				StringBuilder lenStrBuilder = new StringBuilder();
-				lenStrBuilder.append(String.valueOf((char) beginning));
-				
-				char next = (char) reader.read();
-				
-				while(DecoderUtils.isNumeric(next)) {
-					lenStrBuilder.append(String.valueOf(next));
-					next = (char) reader.read();
-				}
-				
-				int strlen = Integer.parseInt(lenStrBuilder.toString());
-				char[] buf = new char[strlen];
-				
-				reader.read(buf, 0, strlen);
-				
-				String data = String.valueOf(buf);
-				
-				if(data.length() != strlen) {
-					throw new Exception("String.error.1");
-				}
-				
-				elementList.add(new BEncodingString(data));
-			}
-			
-			beginning = reader.read();
+		BEncodingElementDecoder<?> decoder = null; // TODO: null'ı kaldır
+
+		if (beginning == -1) {
+			//throw exp
+			System.out.println("-1");
 		}
+
+		if ('i' == (char) beginning) {
+			decoder = new BEncodingIntegerDecoder();
+		} else if ('l' == (char) beginning) {
+			decoder = new BEncodingListDecoder();
+		} else if ('d' == (char) beginning) {
+			decoder = new BEncodingDictionaryDecoder();
+		} else if (DecoderUtils.isNumeric((char) beginning)) {
+			decoder = new BEncodingStringDecoder();
+		}
+
+		decoder.setReader(reader);
+		BEncodingElement<?> element = decoder.decode();
 		
-		return elementList;
+		System.out.println("Decoder.decode: Decoding is over! Here are the results!");
+		
+		/*DEBUG*/
+		System.out.println(element);
+		/*DEBUG*/
+
+		return element;
 	}
 }

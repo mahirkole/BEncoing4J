@@ -1,4 +1,4 @@
-package com.mahirkole.jittorrent.bencoder4j;
+package com.mahirkole.jittorrent.bencoder4j.util;
 
 public class DecoderUtils {
 	private DecoderUtils() {

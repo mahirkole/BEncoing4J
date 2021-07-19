@@ -1,6 +1,7 @@
-package com.mahirkole.jittorrent.bencoder4j;
+package com.mahirkole.jittorrent.bencoder4j.element;
 
 public class BEncodingString implements BEncodingElement<String> {
+	
 	private String decodedString;
 
 	public BEncodingString(String decodedString) {
@@ -9,5 +10,10 @@ public class BEncodingString implements BEncodingElement<String> {
 
 	public String read() {
 		return decodedString;
+	}
+
+	@Override
+	public String toString() {
+		return "BEncodingString [decodedString=" + decodedString + "]";
 	}
 }
