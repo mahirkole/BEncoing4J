@@ -11,8 +11,21 @@ public class BEncodingList implements BEncodingElement<List<BEncodingElement<?>>
 		this.elementList = new ArrayList<BEncodingElement<?>>();
 	}
 	
-	public List<BEncodingElement<?>> read() {
+	public List<BEncodingElement<?>> decode() {
 		return elementList;
+	}
+	
+	public String encode() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("l");
+		
+		for(BEncodingElement<?> element : elementList) {
+			strBuilder.append(element.encode());
+		}
+		
+		strBuilder.append("e");
+		
+		return strBuilder.toString();
 	}
 
 	public void add(BEncodingElement<?> element) {

@@ -8,10 +8,14 @@ public class BEncodingString implements BEncodingElement<String> {
 		this.decodedString = decodedString;
 	}
 
-	public String read() {
+	public String decode() {
 		return decodedString;
 	}
 
+	public String encode() {
+		return decodedString.length() + ":" + decodedString;
+	}
+	
 	@Override
 	public String toString() {
 		return "BEncodingString [decodedString=" + decodedString + "]";

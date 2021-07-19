@@ -25,13 +25,7 @@ public class Decoder {
 		return decoder;
 	}
 
-	public <T> T decodeElement(BEncodingElement<T> element) {
-
-		return null;
-	}
-
 	public BEncodingElement<?> decode(String content) throws Exception {
-		System.out.println("Decoder.decode.content: " + content);
 		StringReader reader = new StringReader(content);
 		return decode(reader);
 	}
@@ -39,8 +33,6 @@ public class Decoder {
 	public BEncodingElement<?> decode(StringReader reader) throws IOException {
 		int beginning = reader.read();
 
-		System.out.println("Decoder.decode.beginning: " + ((char) beginning));
-		
 		BEncodingElementDecoder<?> decoder = null; // TODO: null'ı kaldır
 
 		if (beginning == -1) {
@@ -59,14 +51,6 @@ public class Decoder {
 		}
 
 		decoder.setReader(reader);
-		BEncodingElement<?> element = decoder.decode();
-		
-		System.out.println("Decoder.decode: Decoding is over! Here are the results!");
-		
-		/*DEBUG*/
-		System.out.println(element);
-		/*DEBUG*/
-
-		return element;
+		return decoder.decode();
 	}
 }

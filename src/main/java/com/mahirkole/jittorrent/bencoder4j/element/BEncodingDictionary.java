@@ -2,6 +2,7 @@ package com.mahirkole.jittorrent.bencoder4j.element;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class BEncodingDictionary implements BEncodingElement<Map<BEncodingString, BEncodingElement<?>>> {
 
@@ -11,10 +12,23 @@ public class BEncodingDictionary implements BEncodingElement<Map<BEncodingString
 		this.elementDictionary = new HashMap<BEncodingString, BEncodingElement<?>>();
 	}
 
-	public Map<BEncodingString, BEncodingElement<?>> read() {
+	public Map<BEncodingString, BEncodingElement<?>> decode() {
 		return this.elementDictionary;
 	}
 
+	public String encode() {
+		StringBuilder strBuilder = new StringBuilder();
+		strBuilder.append("d");
+		
+		for(Entry<BEncodingString, BEncodingElement<?>> entry : elementDictionary.entrySet()) {
+			strBuilder.append(entry.getKey().encode());
+			strBuilder.append(entry.getValue().encode());
+		}
+		
+		strBuilder.append("e");
+		return strBuilder.toString();
+	}
+	
 	public void put(BEncodingString key, BEncodingElement<?> value) {
 		this.elementDictionary.put(key, value);
 	}

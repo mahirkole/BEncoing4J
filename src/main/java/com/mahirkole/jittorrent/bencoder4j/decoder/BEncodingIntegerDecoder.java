@@ -14,7 +14,6 @@ public class BEncodingIntegerDecoder implements BEncodingElementDecoder<BEncodin
 	}
 
 	public BEncodingInteger decode() throws IOException {
-		System.out.println("IntegerDecoder.decode");
 		boolean sign = true;
 		StringBuilder numberBuilder = new StringBuilder();
 
@@ -25,15 +24,11 @@ public class BEncodingIntegerDecoder implements BEncodingElementDecoder<BEncodin
 			next = (char) reader.read();
 		}
 
-		System.out.println("IntegerDecoder.decode.sign: " + (sign ? "+" : "-"));
-		
 		while ('e' != next) {
 			numberBuilder.append(next);
 			next = (char) reader.read();
 		}
 		
-		System.out.println("IntegerDecoder.decode.numberBuilder: " + numberBuilder.toString());
-
 		return new BEncodingInteger((sign ? 1 : -1) * Integer.parseInt(numberBuilder.toString()));
 	}
 

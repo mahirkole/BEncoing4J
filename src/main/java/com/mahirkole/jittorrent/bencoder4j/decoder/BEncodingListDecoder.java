@@ -15,12 +15,9 @@ public class BEncodingListDecoder implements BEncodingElementDecoder<BEncodingLi
 	}
 
 	public BEncodingList decode() throws IOException {
-		System.out.println("ListDecoder.decode");
 		Decoder decoder = Decoder.getInstance();
 		
 		char next = (char) reader.read();
-		
-		System.out.println("ListDecoder.decode.next: " + next);
 		
 		BEncodingList elementList = new BEncodingList();
 		

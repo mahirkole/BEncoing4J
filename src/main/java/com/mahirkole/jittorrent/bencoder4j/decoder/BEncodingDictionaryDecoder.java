@@ -16,12 +16,9 @@ public class BEncodingDictionaryDecoder implements BEncodingElementDecoder<BEnco
 	}
 
 	public BEncodingDictionary decode() throws IOException {
-		System.out.println("DictionaryDecoder.decode");
 		Decoder decoder = Decoder.getInstance();
 		
 		char next = (char) reader.read();
-		
-		System.out.println("DictionaryDecoder.decode.next: " + next);
 		
 		BEncodingDictionary elementDictionary = new BEncodingDictionary();
 		

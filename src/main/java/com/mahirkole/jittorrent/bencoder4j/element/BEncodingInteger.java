@@ -8,10 +8,14 @@ public class BEncodingInteger implements BEncodingElement<Integer> {
 		this.integer = integer;
 	}
 	
-	public Integer read() {
+	public Integer decode() {
 		return integer;
 	}
 
+	public String encode() {
+		return "i" + integer + "e";
+	}
+	
 	@Override
 	public String toString() {
 		return "BEncodingInteger [integer=" + integer + "]";
