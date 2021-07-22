@@ -12,4 +12,8 @@ public class DecoderUtils {
 	public static boolean isAsciiAlpha(char ch) {
 		return (ch >= 65 && ch <= 90) || (ch >= 97 && ch <= 122);
 	}
+	
+	public static boolean isEmpty(String str) {
+		return str == null || str.trim().equals("");
+	}
 }

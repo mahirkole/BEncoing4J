@@ -2,7 +2,7 @@ package com.mahirkole.jittorrent.bencoder4j;
 
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingDictionary;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingElement;
-import com.mahirkole.jittorrent.bencoder4j.element.BEncodingInteger;
+import com.mahirkole.jittorrent.bencoder4j.element.BEncodingNumber;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingList;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingString;
 
@@ -29,7 +29,7 @@ public class Encoder {
 		return string.encode();
 	}
 
-	public String encode(BEncodingInteger integer) {
+	public String encode(BEncodingNumber integer) {
 		return integer.encode();
 	}
 

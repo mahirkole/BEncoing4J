@@ -39,6 +39,7 @@ public class BEncodingListDecoder implements BEncodingElementDecoder<BEncodingLi
 		} catch (BEncodingInvalidTypeOfElementIdentifier e) {
 			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
 	}

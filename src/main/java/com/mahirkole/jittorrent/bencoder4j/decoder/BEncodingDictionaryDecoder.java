@@ -40,6 +40,7 @@ public class BEncodingDictionaryDecoder implements BEncodingElementDecoder<BEnco
 		} catch (BEncodingInvalidTypeOfElementIdentifier e) {
 			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
 

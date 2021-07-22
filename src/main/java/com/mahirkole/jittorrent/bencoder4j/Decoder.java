@@ -5,7 +5,7 @@ import java.io.StringReader;
 
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingDictionaryDecoder;
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingElementDecoder;
-import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingIntegerDecoder;
+import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingNumberDecoder;
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingListDecoder;
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingStringDecoder;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingElement;
@@ -43,7 +43,7 @@ public class Decoder {
 		}
 
 		if ('i' == (char) beginning) {
-			decoder = new BEncodingIntegerDecoder();
+			decoder = new BEncodingNumberDecoder();
 		} else if ('l' == (char) beginning) {
 			decoder = new BEncodingListDecoder();
 		} else if ('d' == (char) beginning) {
@@ -60,6 +60,7 @@ public class Decoder {
 		} catch (IOException e) {
 			throw e;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
 	}
