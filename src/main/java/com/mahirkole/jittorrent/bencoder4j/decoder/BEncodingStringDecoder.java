@@ -33,10 +33,11 @@ public class BEncodingStringDecoder implements BEncodingElementDecoder<BEncoding
 			int strlen = Integer.parseInt(lenStrBuilder.toString());
 			char[] buf = new char[strlen];
 
-			if(String.valueOf(buf).equals("piece length") || String.valueOf(buf).equals("pieces")) {
-				System.out.println("HEYYYYY");
+			if(strlen > 0 && DecoderUtils.isEmpty(String.valueOf(buf))) {
+				throw new BEncodingInvalidFormatException();
 			}
-						reader.read(buf, 0, strlen);
+			
+			reader.read(buf, 0, strlen);
 
 			return new BEncodingString(String.valueOf(buf));
 		} catch (IOException e) {
