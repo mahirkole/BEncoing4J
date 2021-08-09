@@ -1,31 +1,34 @@
 package com.mahirkole.jittorrent.bencoder4j.element;
 
-public class BEncodingString implements BEncodingElement<String> {
-	
-	private String decodedString;
+import java.util.Arrays;
 
-	public BEncodingString(String decodedString) {
-		this.decodedString = decodedString;
+public class BEncodingString implements BEncodingElement<byte[]> {
+	
+	private byte[] byteString;
+
+	public BEncodingString(byte[] byteString) {
+		this.byteString = byteString;
 	}
 
-	public String decode() {
-		return decodedString;
+	public byte[] decode() {
+		return byteString;
 	}
 
 	public String encode() {
-		return decodedString.length() + ":" + decodedString;
+		return byteString.length + ":" + byteString.toString();
 	}
 	
 	@Override
 	public String toString() {
-		return "BEncodingString [decodedString=" + decodedString + "]";
+		return new String(byteString);
+		//return "BEncodingString [byteString=" + new String(byteString) + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((decodedString == null) ? 0 : decodedString.hashCode());
+		result = prime * result + Arrays.hashCode(byteString);
 		return result;
 	}
 
@@ -38,10 +41,7 @@ public class BEncodingString implements BEncodingElement<String> {
 		if (getClass() != obj.getClass())
 			return false;
 		BEncodingString other = (BEncodingString) obj;
-		if (decodedString == null) {
-			if (other.decodedString != null)
-				return false;
-		} else if (!decodedString.equals(other.decodedString))
+		if (!Arrays.equals(byteString, other.byteString))
 			return false;
 		return true;
 	}

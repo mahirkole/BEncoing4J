@@ -1,23 +1,17 @@
 package com.mahirkole.jittorrent.bencoder4j.decoder;
 
 import java.io.IOException;
-import java.io.StringReader;
 
+import com.mahirkole.jittorrent.bencoder4j.BEncodingReader;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingString;
 import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingInvalidFormatException;
 import com.mahirkole.jittorrent.bencoder4j.util.DecoderUtils;
 
 public class BEncodingStringDecoder implements BEncodingElementDecoder<BEncodingString> {
 
-	private StringReader reader;
-
-	public void setReader(StringReader reader) {
-		this.reader = reader;
-	}
-
-	public BEncodingString decode() throws IOException, BEncodingInvalidFormatException {
+	public BEncodingString decode(BEncodingReader reader) throws IOException, BEncodingInvalidFormatException {
 		try {
-			reader.skip(-1);
+			reader.rewind(1);
 			char beginning = (char) reader.read();
 
 			StringBuilder lenStrBuilder = new StringBuilder();
@@ -31,21 +25,42 @@ public class BEncodingStringDecoder implements BEncodingElementDecoder<BEncoding
 			}
 
 			int strlen = Integer.parseInt(lenStrBuilder.toString());
-			char[] buf = new char[strlen];
-
-			if(strlen > 0 && DecoderUtils.isEmpty(String.valueOf(buf))) {
-				throw new BEncodingInvalidFormatException();
+			byte[] buf = new byte[strlen];
+			
+			for(int i=0; i<strlen; i++) {
+				buf[i] = reader.read();
+			}
+			//reader.read(buf, 0, strlen);
+			
+			String value = new String(buf);
+			
+			if(strlen > 50000) {
+				StringBuilder hexBuilder = new StringBuilder();
+				for(int i=0; i<strlen; i++) {
+					hexBuilder.append(byteToHex(buf[i]));
+				}
+				
+				value = hexBuilder.toString();
+				
+				System.out.println(value);
 			}
 			
-			reader.read(buf, 0, strlen);
+			if(strlen > 0 && DecoderUtils.isEmpty(value)) {
+				throw new BEncodingInvalidFormatException();
+			}
 
-			return new BEncodingString(String.valueOf(buf));
-		} catch (IOException e) {
-			throw e;
+			return new BEncodingString(buf);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
 
+	}
+	
+	private String byteToHex(byte num) {
+	    char[] hexDigits = new char[2];
+	    hexDigits[0] = Character.forDigit((num >> 4) & 0xF, 16);
+	    hexDigits[1] = Character.forDigit((num & 0xF), 16);
+	    return new String(hexDigits);
 	}
 }

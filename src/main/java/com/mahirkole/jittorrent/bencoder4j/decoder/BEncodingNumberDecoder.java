@@ -1,20 +1,16 @@
 package com.mahirkole.jittorrent.bencoder4j.decoder;
 
 import java.io.IOException;
-import java.io.StringReader;
 
+import com.mahirkole.jittorrent.bencoder4j.BEncodingReader;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingNumber;
 import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingInvalidFormatException;
+import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingInvalidTypeOfElementIdentifier;
+import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingNoContentException;
 
 public class BEncodingNumberDecoder implements BEncodingElementDecoder<BEncodingNumber>{
 
-	private StringReader reader;
-	
-	public void setReader(StringReader reader) {
-		this.reader = reader;
-	}
-
-	public BEncodingNumber decode() throws IOException, BEncodingInvalidFormatException {
+	public BEncodingNumber decode(BEncodingReader reader) throws IOException, BEncodingNoContentException, BEncodingInvalidTypeOfElementIdentifier, BEncodingInvalidFormatException {
 		try {
 			boolean sign = true;
 			StringBuilder numberBuilder = new StringBuilder();
@@ -32,13 +28,10 @@ public class BEncodingNumberDecoder implements BEncodingElementDecoder<BEncoding
 			}
 			
 			return new BEncodingNumber((sign ? 1 : -1) * Long.parseLong(numberBuilder.toString()));
-		} catch(IOException e) {
-			throw e;
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
-		
 	}
 
 }
