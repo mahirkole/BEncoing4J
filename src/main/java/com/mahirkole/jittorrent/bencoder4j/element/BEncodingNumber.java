@@ -18,6 +18,7 @@ public class BEncodingNumber implements BEncodingElement<Long> {
 	
 	@Override
 	public String toString() {
-		return "BEncodingNumber [number=" + number + "]";
+		return number.toString();
+		//return "BEncodingNumber [number=" + number + "]";
 	}
 }

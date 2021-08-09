@@ -35,6 +35,18 @@ public class BEncodingDictionary implements BEncodingElement<Map<BEncodingString
 
 	@Override
 	public String toString() {
-		return "BEncodingDictionary [elementDictionary=" + elementDictionary + "]";
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("{");
+		
+		for(Entry<BEncodingString, BEncodingElement<?>> entry : elementDictionary.entrySet()) {
+			stringBuilder.append(entry.getKey().toString());
+			stringBuilder.append(": ");
+			stringBuilder.append(entry.getValue().toString());
+			stringBuilder.append(", ");
+		}
+		
+		stringBuilder.append("}");
+		
+		return stringBuilder.toString();
 	}
 }

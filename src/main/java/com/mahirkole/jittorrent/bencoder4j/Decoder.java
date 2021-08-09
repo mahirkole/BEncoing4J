@@ -1,7 +1,6 @@
 package com.mahirkole.jittorrent.bencoder4j;
 
 import java.io.IOException;
-import java.io.StringReader;
 
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingDictionaryDecoder;
 import com.mahirkole.jittorrent.bencoder4j.decoder.BEncodingElementDecoder;
@@ -29,11 +28,10 @@ public class Decoder {
 	}
 
 	public BEncodingElement<?> decode(String content) throws Exception {
-		StringReader reader = new StringReader(content);
-		return decode(reader);
+		return decode(new BEncodingReader(content));
 	}
 
-	public BEncodingElement<?> decode(StringReader reader) throws IOException, BEncodingNoContentException, BEncodingInvalidTypeOfElementIdentifier, BEncodingInvalidFormatException {
+	public BEncodingElement<?> decode(BEncodingReader reader) throws IOException, BEncodingNoContentException, BEncodingInvalidTypeOfElementIdentifier, BEncodingInvalidFormatException {
 		int beginning = reader.read();
 
 		BEncodingElementDecoder<?> decoder;
@@ -55,8 +53,7 @@ public class Decoder {
 		}
 
 		try {
-			decoder.setReader(reader);
-			return decoder.decode();
+			return decoder.decode(reader);
 		} catch (IOException e) {
 			throw e;
 		} catch (Exception e) {

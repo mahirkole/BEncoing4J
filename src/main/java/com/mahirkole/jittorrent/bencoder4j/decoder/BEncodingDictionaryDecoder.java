@@ -1,10 +1,11 @@
 package com.mahirkole.jittorrent.bencoder4j.decoder;
 
 import java.io.IOException;
-import java.io.StringReader;
 
+import com.mahirkole.jittorrent.bencoder4j.BEncodingReader;
 import com.mahirkole.jittorrent.bencoder4j.Decoder;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingDictionary;
+import com.mahirkole.jittorrent.bencoder4j.element.BEncodingElement;
 import com.mahirkole.jittorrent.bencoder4j.element.BEncodingString;
 import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingInvalidFormatException;
 import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingInvalidTypeOfElementIdentifier;
@@ -12,13 +13,7 @@ import com.mahirkole.jittorrent.bencoder4j.exception.BEncodingNoContentException
 
 public class BEncodingDictionaryDecoder implements BEncodingElementDecoder<BEncodingDictionary> {
 
-	private StringReader reader;
-
-	public void setReader(StringReader reader) {
-		this.reader = reader;
-	}
-
-	public BEncodingDictionary decode() throws IOException, BEncodingNoContentException, BEncodingInvalidTypeOfElementIdentifier, BEncodingInvalidFormatException {
+	public BEncodingDictionary decode(BEncodingReader reader) throws IOException, BEncodingNoContentException, BEncodingInvalidTypeOfElementIdentifier, BEncodingInvalidFormatException {
 		try {
 			Decoder decoder = Decoder.getInstance();
 
@@ -27,8 +22,10 @@ public class BEncodingDictionaryDecoder implements BEncodingElementDecoder<BEnco
 			BEncodingDictionary elementDictionary = new BEncodingDictionary();
 
 			while ('e' != next) {
-				reader.skip(-1);
-				elementDictionary.put((BEncodingString) decoder.decode(reader), decoder.decode(reader));
+				reader.rewind(1);
+				BEncodingString key = (BEncodingString) decoder.decode(reader);
+				BEncodingElement<?> value = decoder.decode(reader);
+				elementDictionary.put(key, value);
 				next = (char) reader.read();
 			}
 
@@ -43,7 +40,6 @@ public class BEncodingDictionaryDecoder implements BEncodingElementDecoder<BEnco
 			e.printStackTrace();
 			throw new BEncodingInvalidFormatException();
 		}
-
 	}
 
 }

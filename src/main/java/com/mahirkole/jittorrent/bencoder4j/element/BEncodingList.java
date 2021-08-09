@@ -42,6 +42,17 @@ public class BEncodingList implements BEncodingElement<List<BEncodingElement<?>>
 	
 	@Override
 	public String toString() {
-		return "BEncodingList [elementList=" + elementList + "]";
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		stringBuilder.append("[");
+		
+		for(BEncodingElement<?> element : elementList) {
+			stringBuilder.append(element).append(", ");
+		}
+		
+		stringBuilder.append("]");
+		
+		return stringBuilder.toString();
+		//return "BEncodingList [elementList=" + elementList + "]";
 	}
 }
